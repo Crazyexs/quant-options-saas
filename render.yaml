@@ -1,0 +1,57 @@
+# Render blueprint — one-click FREE deploy of the Django backend.
+# Render dashboard -> New -> Blueprint -> point at this repo. All free tier.
+# (DB: a free Render Postgres is provisioned below. It is deleted after ~30 days
+#  on the free plan — for a permanent free DB use Neon and set DATABASE_URL by
+#  hand instead; see DEPLOY.md.)
+services:
+  - type: web
+    name: quant-options-api
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: "bash build.sh"
+    startCommand: "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120"
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.4"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "false"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: quant-db
+          property: connectionString
+      # Fill these in the Render dashboard after the first deploy:
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false          # e.g. https://your-app.vercel.app
+      - key: CSRF_TRUSTED_ORIGINS
+        sync: false          # e.g. https://your-app.vercel.app
+      - key: FRONTEND_URL
+        sync: false          # e.g. https://your-app.vercel.app
+      - key: PROMPTPAY_ID
+        sync: false
+      - key: PROMPTPAY_NAME
+        sync: false
+      - key: DJANGO_SUPERUSER_EMAIL
+        sync: false
+      - key: DJANGO_SUPERUSER_PASSWORD
+        sync: false
+      # Optional social login:
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: LINE_CLIENT_ID
+        sync: false
+      - key: LINE_CLIENT_SECRET
+        sync: false
+
+databases:
+  - name: quant-db
+    plan: free
+    databaseName: quant
+    user: quant

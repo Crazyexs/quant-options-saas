@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+:root {
+  color-scheme: dark;
+}
+body {
+  background: #0B0E11;
+  color: #E6EAF0;
+  font-family: Inter, system-ui, sans-serif;
+}
+.card {
+  background: #151A21;
+  border: 1px solid #222A33;
+  border-radius: 10px;
+  padding: 16px;
+}
+.num {
+  font-family: "IBM Plex Mono", monospace;
+}
+.btn {
+  background: #3B82F6;
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+}
+.btn:hover { opacity: 0.9; }
+.btn-ghost {
+  border: 1px solid #222A33;
+  border-radius: 8px;
+  padding: 10px 18px;
+}
