@@ -34,10 +34,13 @@ export default function LoginPage() {
         {mode === "login" ? "Log in" : "Create account"}
       </h1>
 
-      {/* Social login is wired in the backend via allauth (LINE + Google). */}
+      {/* Social login is wired in the backend via allauth (Discord). */}
       <div className="space-y-2 mb-6">
-        <a href={`${API}/accounts/line/login/`} className="btn-ghost block text-center">Continue with LINE</a>
-        <a href={`${API}/accounts/google/login/`} className="btn-ghost block text-center">Continue with Google</a>
+        <a href={`${API}/accounts/discord/login/`}
+           className="block text-center rounded-lg py-3 font-semibold"
+           style={{ background: "#5865F2", color: "#fff" }}>
+          Continue with Discord
+        </a>
       </div>
       <div className="text-center text-muted text-xs mb-6">or with email</div>
 

@@ -68,26 +68,24 @@ Plans are seeded by `python manage.py seed_plans` (edit in
 `billing/management/commands/seed_plans.py` or in the admin).
 
 --------------------------------------------------------------------------------
-## Enable LINE + Google login (end-to-end, already wired)
+## Enable Discord login (end-to-end, already wired)
 
-The flow: frontend link -> `/accounts/<provider>/login/` -> provider OAuth ->
+The flow: frontend link -> `/accounts/discord/login/` -> Discord OAuth ->
 allauth logs the user in -> `social_complete` mints a JWT -> redirects to
 `FRONTEND_URL/auth/callback?access=...&refresh=...` -> the SPA stores the tokens.
 Credentials come from settings (no DB SocialApp needed).
 
-1. Create a **Google OAuth client** (Google Cloud Console) and a **LINE Login
-   channel** (LINE Developers).
-2. Put the IDs/secrets in backend `.env` (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
-   LINE_CLIENT_ID, LINE_CLIENT_SECRET) and set FRONTEND_URL. Filling any of these
-   auto-enables allauth.
-3. Register these **redirect URIs** with each provider:
-   - Google: `https://<backend>/accounts/google/login/callback/`
-   - LINE:   `https://<backend>/accounts/line/login/callback/`
-4. The login page already links to `/accounts/line/login/` and
-   `/accounts/google/login/`; the `/auth/callback` page completes sign-in.
+1. discord.com/developers -> New Application -> OAuth2.
+2. Add redirect URI: `https://<backend>/accounts/discord/login/callback/`
+   (locally: `http://localhost:8000/accounts/discord/login/callback/`).
+3. Put `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET` in backend `.env` and set
+   `FRONTEND_URL`. Setting these auto-enables allauth.
+4. The login page's "Continue with Discord" button links to
+   `/accounts/discord/login/`; the `/auth/callback` page completes sign-in.
 
-Note: LINE only returns an email if you have the email permission approved; the
-`SocialAdapter` synthesizes a placeholder email from the LINE uid otherwise.
+Note: Discord returns an email when the user grants the email scope and has a
+verified email; otherwise `SocialAdapter` synthesizes a placeholder email from
+the Discord uid.
 
 --------------------------------------------------------------------------------
 ## Deploy (free)

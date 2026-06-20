@@ -45,13 +45,12 @@ INSTALLED_APPS = [
     "market",
 ]
 
-# Social auth is optional for the MVP; enable by setting the provider keys.
-SOCIAL_AUTH_ENABLED = bool(os.getenv("GOOGLE_CLIENT_ID") or os.getenv("LINE_CLIENT_ID"))
+# Social auth is optional for the MVP; enable by setting the Discord keys.
+SOCIAL_AUTH_ENABLED = bool(os.getenv("DISCORD_CLIENT_ID"))
 if SOCIAL_AUTH_ENABLED:
     INSTALLED_APPS += [
         "allauth", "allauth.account", "allauth.socialaccount",
-        "allauth.socialaccount.providers.google",
-        "allauth.socialaccount.providers.line",
+        "allauth.socialaccount.providers.discord",
     ]
 
 MIDDLEWARE = [
@@ -158,20 +157,15 @@ if SOCIAL_AUTH_ENABLED:
     ACCOUNT_EMAIL_REQUIRED = True
     ACCOUNT_AUTHENTICATION_METHOD = "email"
     ACCOUNT_EMAIL_VERIFICATION = "none"
-    SOCIALACCOUNT_LOGIN_ON_GET = True          # /accounts/google/login/ redirects immediately
+    SOCIALACCOUNT_LOGIN_ON_GET = True          # /accounts/discord/login/ redirects immediately
     SOCIALACCOUNT_ADAPTER = "accounts.adapters.SocialAdapter"
     # After allauth logs the user in, mint a JWT and bounce to the frontend.
     LOGIN_REDIRECT_URL = "/api/auth/social/complete/"
     SOCIALACCOUNT_PROVIDERS = {
-        "google": {
-            "APP": {"client_id": os.getenv("GOOGLE_CLIENT_ID", ""),
-                    "secret": os.getenv("GOOGLE_CLIENT_SECRET", ""), "key": ""},
-            "SCOPE": ["profile", "email"],
-            "AUTH_PARAMS": {"access_type": "online"},
-        },
-        "line": {
-            "APP": {"client_id": os.getenv("LINE_CLIENT_ID", ""),
-                    "secret": os.getenv("LINE_CLIENT_SECRET", ""), "key": ""},
+        "discord": {
+            "APP": {"client_id": os.getenv("DISCORD_CLIENT_ID", ""),
+                    "secret": os.getenv("DISCORD_CLIENT_SECRET", ""), "key": ""},
+            "SCOPE": ["identify", "email"],
         },
     }
 

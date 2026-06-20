@@ -1,7 +1,7 @@
 """
-allauth social adapter. LINE does not always return an email (the email scope
-needs special approval), so we synthesize a stable placeholder from the provider
-uid to satisfy our email-unique User model. Google returns a real email.
+allauth social adapter. Discord returns an email when the user granted the email
+scope and has a verified email; if it's missing we synthesize a stable placeholder
+from the provider uid to satisfy our email-unique User model.
 """
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 

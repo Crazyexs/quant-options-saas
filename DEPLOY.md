@@ -68,14 +68,14 @@ Note: free Render web services sleep after ~15 min idle; first request then take
    / `FRONTEND_URL` match this exact Vercel URL, then redeploy the backend.
 
 --------------------------------------------------------------------------------
-## 4. (Optional) LINE + Google login
+## 4. (Optional) Discord login
 
-1. Google Cloud Console -> OAuth client; LINE Developers -> Login channel.
-2. Add redirect URIs:
-   - `https://<backend>.onrender.com/accounts/google/login/callback/`
-   - `https://<backend>.onrender.com/accounts/line/login/callback/`
-3. Put `GOOGLE_CLIENT_ID/SECRET`, `LINE_CLIENT_ID/SECRET` in Render env, redeploy.
-   (Filling any of them auto-enables allauth.)
+1. discord.com/developers -> New Application -> OAuth2.
+2. Add this redirect URI (OAuth2 -> Redirects):
+   - `https://<backend>.onrender.com/accounts/discord/login/callback/`
+3. Copy the Client ID + Client Secret into Render env as `DISCORD_CLIENT_ID` /
+   `DISCORD_CLIENT_SECRET`, then redeploy. (Setting these auto-enables allauth.)
+4. The login page's "Continue with Discord" button then works end-to-end.
 
 --------------------------------------------------------------------------------
 ## 5. Test the live deployment (manual smoke test)
